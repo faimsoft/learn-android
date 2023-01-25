@@ -1,5 +1,6 @@
 package com.faimsoft.learnandroid
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -21,7 +22,13 @@ class MainActivity : AppCompatActivity() {
             val password = binding.etPassword.text.toString().trim()
 
             Log.e(TAG,"email: $email , password: $password")
-            Toast.makeText(this, "email: $email , password: $password", Toast.LENGTH_SHORT).show()
+
+            if (email == "1234" && password == "1234") {
+                val intent = Intent(this, HomeActivity::class.java)
+                startActivity(intent)
+                return@setOnClickListener
+            }
+            Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show()
 
         }
 
