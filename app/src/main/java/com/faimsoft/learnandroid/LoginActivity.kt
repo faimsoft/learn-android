@@ -5,17 +5,23 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import com.faimsoft.learnandroid.databinding.ActivityMainBinding
+import androidx.activity.viewModels
+import com.faimsoft.learnandroid.databinding.ActivityLoginBinding
+import com.faimsoft.learnandroid.ui.MainViewModel
 import com.google.android.material.textfield.TextInputLayout
 
-class MainActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityLoginBinding
+
+    private val mainViewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        mainViewModel.init(this)
 
         binding.login.setOnClickListener {
             val email = binding.etUsername.text.toString().trim()
@@ -23,13 +29,11 @@ class MainActivity : AppCompatActivity() {
 
             Log.e(TAG,"email: $email , password: $password")
 
-            if (email == "1234" && password == "1234") {
-                val intent = Intent(this, HomeActivity::class.java)
-                startActivity(intent)
-                return@setOnClickListener
-            }
-            Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show()
+            mainViewModel.appDataProvider.login(email, password)
 
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
 
